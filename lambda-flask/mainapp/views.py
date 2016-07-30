@@ -8,37 +8,47 @@ import os
 
 from predstuff import get_model
 
-@mainapp.route('/')
+@mainapp.route('/', methods=['GET','POST'])
 def index():
-    form = forms.UserInputForm()
-    return render_template('index.html', title='GovHack 2016') #, form=form)
+    if request.method == 'GET':
+        # form = forms.UserInputForm()
+        return render_template('index.html', title='GovHack 2016') #, form=form)
+    else:
+        return request.get_data()
 
 parser = reqparse.RequestParser()
 parser.add_argument('isMale')
 parser.add_argument('ageRange')
 parser.add_argument('occupationCode')
-parser.add_argument('maritalStatus')
+parser.add_argument('maritalStatus', action='append')
 parser.add_argument('regionCode')
-parser.add_argument('taxAgent')
+parser.add_argument('taxAgent', action='append')
 parser.add_argument('salaryWages')
 
 class TaxProcess(Resource):
     def get(self):
-        # doing relative path
-        # not working on windows the pickle file
-        dir = os.path.dirname(__file__)
-        mdl = get_model.load_model\
-            (os.path.join(dir, 'reg_baseline.p'))
-        return get_model.predict(mdl, np.random.random_sample((35, 2)))
+        # dir = os.path.dirname(__file__)
+        pred = get_model.prediction_backend([1, 10, 200000])
+        cl = get_model.clustering_backend([1, 10, 200000])
+
+        return {'pred' : pred, 'cl' : cl}
 
     # receive the post request from front end
     def post(self):
         # getting the arguments
         args = parser.parse_args()
+        pred_arg = np.array([args['isMale'],
+                            args['ageRange'],
+                            args['occupationCode']], dtype='float32')
         # doing machine learning magic and returning result to the front end
-        return magic(args)
+        pred = get_model.prediction_backend(pred_arg)
+        cl = get_model.clustering_backend(pred_arg)#[1, 10, 200000])
 
-def magic(data):
-    return jsonify(dict({'hey': 1, 'how': 3 }.items() + data.items()))
+        # return pred
+        # return args['taxAgent']
+        args['pred'] = pred
+        args['cl'] = cl
+        return args
+
 
 api.add_resource(TaxProcess, '/process')
