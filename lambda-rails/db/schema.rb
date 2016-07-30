@@ -11,9 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20160730065833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "regions", force: :cascade do |t|
+    t.integer  "postcode"
+    t.integer  "region_code"
+    t.text     "state"
+    t.text     "region_name"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.boolean  "is_male"
+    t.integer  "occ_code"
+    t.boolean  "has_partner"
+    t.integer  "region"
+    t.boolean  "used_tax_agent"
+    t.decimal  "salary_wages"
+  end
 
 end

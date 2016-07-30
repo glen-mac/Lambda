@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  postcode: 1
+  region_code: 1
+  state: 
+  region_name: MyText
+
+two:
+  postcode: 1
+  region_code: 1
+  state: 
+  region_name: MyText
