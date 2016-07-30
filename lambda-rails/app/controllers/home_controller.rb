@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   require "json"
 
   def getData
-    conn = Faraday.new(:url => 'https://api.twitter.com') do |faraday|
+    conn = Faraday.new(:url => 'http://10.1.3.225:8080') do |faraday|
       faraday.request  :url_encoded             # form-encode POST params
       faraday.response :logger                  # log requests to STDOUT
       faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
@@ -18,44 +18,60 @@ class HomeController < ApplicationController
       return false
     end
 
-    postCode = region.region_code
+    regionCode = region.region_code
 
     response = conn.post do |req|
-      req.url '/nigiri'
+      req.url '/'
       req.headers['Content-Type'] = 'application/json'
-      req.body = '{ "isMale": #{params["gender"]},
-                    "ageRange": #{pms["age_range"]},
-                    "occupationCode": #{params["occupation"]},
-                    "maritalStatus": #{params["marital_status"]},
-                    "regionCode": #{postCode},
-                    "taxAgent": #{params["tax_agent"]},
-                    "salaryWages": #{params["sw_amount"]}}'
-    end
+      req.body = %Q({ "isMale": #{params["gender"]},
+                      "ageRange": #{params["age_range"]},
+                      "occupationCode": #{params["occupation"]},
+                      "maritalStatus": #{params["marital_status"]},
+                      "regionCode": #{regionCode},
+                      "taxAgent": #{params["tax_agent"]},
+                      "salaryWages": #{params["sw_amount"]}}
+                      )
+                      end
 
-    # response = conn.get '/1.1/statuses/user_timeline.json'
-    parsed = JSON.parse(response.body) # returns a hash
+                      conn.body # returns a hash
 
-    #parsed["errors"][0]["code"]
-    #params["email"]
+                      #parsed["errors"][0]["code"]
+                      #params["email"]
 
-    # @user = User.new
-  end
+                      # @user = User.new
+                      end
 
-  def index
-  end
+                      def index
+                      end
 
-  def submit
-    #redirect_to root_path and return if params[:spam].present?
-    # @user = Contact.new(contact_params)
-    # if @user.valid?
-    #   #ContactFormMailer.admin(@contact).deliver
-    #   #redirect_to root_url
-    #   #flash[:success] = "Message sent! Thank you for contacting us"
-    # else
-    render json: getData()
-    flash[:error] = "There was an error in your submission."
-    #end
-  end
+                      def submit
+                        #redirect_to root_path and return if params[:spam].present?
+                        # @user = Contact.new(contact_params)
+                        # if @user.valid?
+                        #   #ContactFormMailer.admin(@contact).deliver
+                        #   #redirect_to root_url
+                        #   #flash[:success] = "Message sent! Thank you for contacting us"
+                        # else
+                        #
+                        if(params["sw_amount"].to_f <= 0)
+                          flash[:error] = "Salary and Wages cannot be 0"
+                          render "index"
+                          return
+                          # elsif(params["postCode"].to_i == 0)
+                          #   flash[:error] = "Postcode must be entered."
+                          #   render "index"
+                          #   return
+                        end
+
+                        result = getData()
+                        if (result != false)
+                          render json: result #{}"result"
+                        else
+                          flash[:error] = "The Postcode entered could not be found."
+                          render "index"
+                        end
+                        #end
+                      end
 
 
-end
+                      end

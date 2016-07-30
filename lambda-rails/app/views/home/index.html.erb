@@ -41,28 +41,28 @@
 				<div class="col-md-4">
 
 					<div class="panel panel-default">
-		<!-- 		<div class="panel-heading">
-					<h3 class="panel-title">Panel title</h3>
-				</div> -->
+
 				<div class="panel-body">
 
 					<%= bootstrap_form_tag do |f| %>
 
-					<%= f.select :gender, [["Male", 0], ["Female", 1]], { label: "Select Gender" }, { class: "selectpicker" } %>
+					<%= f.select :gender, [["Male", 1], ["Female", 0]], { label: "Select Gender" }, { class: "selectpicker" } %>
 
 					<%= f.select :age_range, [["70 and over", 0], ["65 to 69", 1], ["60 to 64", 2], ["55 to 59", 3], ["50 to 54", 4], ["45 to 49", 5], ["40 to 44", 6], ["35 to 39", 7], ["30 to 34", 8], ["25 to 29", 9], ["20 to 24", 10], ["under 20", 11]], { label: "Select Age Range" }, { class: "selectpicker" } %>
 
 					<%= f.select :occupation, [["Occupation not listed/ Occupation not specified", 0], ["Managers", 1], ["Professionals", 2], ["Technicians and Trades Workers", 3], ["Community and Personal Service Workers", 4], ["Clerical and Administrative Workers", 5], ["Sales workers", 6], ["Machinery operators and drivers", 7], ["Labourers", 8], ["Consultants, apprentices and type not specified or not listed", 9]], { label: "Select Occupation Category" }, { class: "selectpicker" } %>
 
-					<%= f.select :marital_status, [["Married", 0], ["Not Currently Married", 1]], { label: "Marital Status" }, { class: "selectpicker" } %>
+					<%= f.select :marital_status, [["Married", 1], ["Not Currently Married", 0]], { label: "Marital Status" }, { class: "selectpicker" } %>
 
-					<%= f.number_field :region, { label: "Enter Postcode" } %>
+					<%= f.number_field :region, { label: "Enter Postcode", value: 'name@example.com' } %>
 
 					<%= f.select :tax_agent, [["Yes", 1], ["No", 0]], { label: "Was a Tax Agent Used?" }, { class: "selectpicker" } %>
 
 					<%= f.number_field :sw_amount, { label: "Enter total sum of all salary and wages" } %>
 
 					<%= f.submit "Log In", class: "btn btn-primary btn-block"%>
+
+					<%= f.errors_on :sw_amount %>
 
 					<% end %>
 				</div>
