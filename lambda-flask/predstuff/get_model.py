@@ -7,7 +7,6 @@ import pickle
 import matplotlib
 import matplotlib.pyplot as plt
 
-
 import seaborn as sns
 
 from math import sqrt
@@ -108,7 +107,7 @@ def load_model(path):
 
 # Getting data
 
-fname = "D:\\GovHack\\all_data\\2014-15.txt"
+fname = "D:\\GovHack\\all_data\\2014-15.txt" # change this to yoour path
 df = pd.read_csv(fname, index_col=None, header=0)
 
 # TODO: dummy variables: Occ_code, Partner_status, Region
@@ -118,7 +117,7 @@ cl_cols = ['Gender', 'age_range', 'Sw_amt']
 
 # Training models
 
-save_dir = "D:\\GovHackGitHub\\predstuff\\models"
+save_dir = os.path.join(os.path.dirname(__file__), 'models')
 
 mse, pred_df = train_test_measure_reg(df=df,
                                       model=Ridge(),
@@ -141,7 +140,7 @@ print "got clustering model"
 
 # Getting models
 
-models_dir = "D:\\GovHackGitHub\\predstuff\\models"
+models_dir = os.path.join(os.path.dirname(__file__), 'models')
 
 reg_model = load_model(models_dir + "reg_model.p")
 print reg_model
