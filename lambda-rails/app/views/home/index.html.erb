@@ -1,62 +1,84 @@
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<%= stylesheet_link_tag "jumbotron-narrow" %>
-  </head>
+<head>
+	<%= stylesheet_link_tag "jquery.fullPage" %>
+	<%= stylesheet_link_tag "custom" %>
+	<%= javascript_include_tag "jquery.fullPage.min" %>
+	<%= javascript_include_tag "jquery-ui.min" %>
+</head>
+<body>
 
-  <body>
+	<div id="fullpage">
+		<div class="section">
+			<div class="row">
 
-    <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Project name</h3>
-      </div>
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
 
-      <div class="jumbotron">
-        <h1>Jumbotron heading</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
-      </div>
+					<div class="inner cover">
+						<h1 class="cover-heading">Lambda ATO System</h1>
+						<p class="lead">Scroll down to fill in your details and find out how your tax returns compare to thousands of other Australians who are just like you, and find out how you can make more from your tax return.</p>
+					</div>
 
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+				</div>
 
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+				<div class="col-md-2"></div>
 
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>
+			</div>
 
-        <div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
 
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+			<div class="mastfoot">
+				<div class="inner">
+					<p>Created with love, by team Lambda for GovHack Sydney 2016.</p>
+				</div>
+			</div>
 
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-        </div>
-      </div>
+		</div>
 
-      <footer class="footer">
-        <p>&copy; 2016 Company, Inc.</p>
-      </footer>
+		<div class="section">
 
-    </div> <!-- /container -->
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4">
 
-    </body>
-</html>
+					<div class="panel panel-default">
+		<!-- 		<div class="panel-heading">
+					<h3 class="panel-title">Panel title</h3>
+				</div> -->
+				<div class="panel-body">
+
+					<%= bootstrap_form_tag do |f| %>
+
+					<%= f.select :gender, [["Male", 0], ["Female", 1]], { label: "Select Gender" }, { class: "selectpicker" } %>
+
+					<%= f.select :age_range, [["70 and over", 0], ["65 to 69", 1], ["60 to 64", 2], ["55 to 59", 3], ["50 to 54", 4], ["45 to 49", 5], ["40 to 44", 6], ["35 to 39", 7], ["30 to 34", 8], ["25 to 29", 9], ["20 to 24", 10], ["under 20", 11]], { label: "Select Age Range" }, { class: "selectpicker" } %>
+
+					<%= f.select :occupation, [["Occupation not listed/ Occupation not specified", 0], ["Managers", 1], ["Professionals", 2], ["Technicians and Trades Workers", 3], ["Community and Personal Service Workers", 4], ["Clerical and Administrative Workers", 5], ["Sales workers", 6], ["Machinery operators and drivers", 7], ["Labourers", 8], ["Consultants, apprentices and type not specified or not listed", 9]], { label: "Select Occupation Category" }, { class: "selectpicker" } %>
+
+					<%= f.select :marital_status, [["Married", 0], ["Not Currently Married", 1]], { label: "Marital Status" }, { class: "selectpicker" } %>
+
+					<%= f.number_field :region, { label: "Enter Postcode" } %>
+
+					<%= f.select :tax_agent, [["Yes", 1], ["No", 0]], { label: "Was a Tax Agent Used?" }, { class: "selectpicker" } %>
+
+					<%= f.number_field :sw_amount, { label: "Enter total sum of all salary and wages" } %>
+
+					<%= f.submit "Log In", class: "btn btn-primary btn-block"%>
+
+					<% end %>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+
+</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		$('#fullpage').fullpage();
+	});
+</script>
+
+</body>
