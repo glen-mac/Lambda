@@ -8,10 +8,13 @@ import os
 
 from predstuff import get_model
 
-@mainapp.route('/')
+@mainapp.route('/', methods=['GET','POST'])
 def index():
-    form = forms.UserInputForm()
-    return render_template('index.html', title='GovHack 2016') #, form=form)
+    if request.method == 'GET':
+        # form = forms.UserInputForm()
+        return render_template('index.html', title='GovHack 2016') #, form=form)
+    else:
+        return request.get_data()
 
 parser = reqparse.RequestParser()
 parser.add_argument('isMale')
@@ -34,13 +37,18 @@ class TaxProcess(Resource):
     def post(self):
         # getting the arguments
         args = parser.parse_args()
+        pred_arg = np.array([args['isMale'],
+                            args['ageRange'],
+                            args['occupationCode']], dtype='float32')
         # doing machine learning magic and returning result to the front end
-        pred = get_model.prediction_backend(np.array(args['taxAgent'],dtype='float32'))
-        cl = get_model.clustering_backend(np.array(args['maritalStatus'], dtype='float32'))#[1, 10, 200000])
+        pred = get_model.prediction_backend(pred_arg)
+        cl = get_model.clustering_backend(pred_arg)#[1, 10, 200000])
 
         # return pred
         # return args['taxAgent']
-        return {'pred': pred, 'cl': cl}
+        args['pred'] = pred
+        args['cl'] = cl
+        return args
 
 
 api.add_resource(TaxProcess, '/process')
