@@ -128,6 +128,11 @@ body {
 }
 
 
+.control-label{
+  color: rgba(9, 9, 9, 0.73);
+  text-shadow: none;
+}
+
 /*
  * Affix and center
  */

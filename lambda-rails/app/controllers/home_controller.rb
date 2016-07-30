@@ -11,14 +11,23 @@ class HomeController < ApplicationController
 
     # ## POST ##
     # post payload as JSON instead of "www-form-urlencoded" encoding:
+
+    region = Region.find_by_postcode(params["region"])
+
+    if(region == nil)
+      return false
+    end
+
+    postCode = region.region_code
+
     response = conn.post do |req|
       req.url '/nigiri'
       req.headers['Content-Type'] = 'application/json'
       req.body = '{ "isMale": #{params["gender"]},
-                    "ageRange": #{params["age_range"]},
+                    "ageRange": #{pms["age_range"]},
                     "occupationCode": #{params["occupation"]},
                     "maritalStatus": #{params["marital_status"]},
-                    "regionCode": #{params["region"]},
+                    "regionCode": #{postCode},
                     "taxAgent": #{params["tax_agent"]},
                     "salaryWages": #{params["sw_amount"]}}'
     end
