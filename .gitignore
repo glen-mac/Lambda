@@ -1,2 +1,3 @@
+db/data.csv
 .DS_Store
 lambda-rails/tmp/cache/assets/sprockets/v3.0/*
