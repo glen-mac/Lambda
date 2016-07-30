@@ -14,7 +14,9 @@ def index():
         # form = forms.UserInputForm()
         return render_template('index.html', title='GovHack 2016') #, form=form)
     else:
-        return request.get_data()
+        return 'hello'
+    # else:
+    #     return request.get_data()
 
 parser = reqparse.RequestParser()
 parser.add_argument('isMale')
