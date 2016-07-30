@@ -29,7 +29,7 @@ class TaxProcess(Resource):
         dir = os.path.dirname(__file__)
         mdl = get_model.load_model\
             (os.path.join(dir, 'reg_baseline.p'))
-        get_model.predict(mdl, np.random.random_sample((35,)))
+        return get_model.predict(mdl, np.random.random_sample((35, 2)))
 
     # receive the post request from front end
     def post(self):
