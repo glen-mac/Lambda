@@ -20,8 +20,8 @@ class HomeController < ApplicationController
 
     regionCode = region.region_code
 
-    response = conn.post do |req|
-      req.url '/'
+    res = conn.post do |req|
+      req.url '/process'
       req.headers['Content-Type'] = 'application/json'
       req.body = %Q({ "isMale": #{params["gender"]},
                       "ageRange": #{params["age_range"]},
@@ -33,7 +33,7 @@ class HomeController < ApplicationController
                       )
                       end
 
-                      conn.body # returns a hash
+                      res.body # returns a hash
 
                       #parsed["errors"][0]["code"]
                       #params["email"]
