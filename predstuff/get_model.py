@@ -1,6 +1,104 @@
-import pickle
+import os
+import glob
+import pandas as pd
 import numpy as np
+import pickle
 
+import matplotlib
+import matplotlib.pyplot as plt
+
+
+import seaborn as sns
+
+from math import sqrt
+from sklearn.linear_model import Ridge, RANSACRegressor
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.cross_validation import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.cluster import KMeans
+
+def train_test_measure_reg(df, model, l_col, f_cols, scale_f=False, poly_f=False, picklize=False, save_dir="/"):
+    """
+    In: df        - DataFrame object that we want to learn from
+        model     - sklearn ML object
+        l_col     - label column name
+        f_cols    - list of feature column names
+
+    Out: tuple of mse and pred-true pairing DataFrame
+    """
+
+    X = df[f_cols].values
+    y = df[l_col].tolist()
+
+    X_train, X_test, y_train, y_test = \
+    train_test_split(X, y, test_size=0.7, random_state=42)
+
+
+    if poly_f:
+        X_train, X_test = _transform(X_train, X_test, PolynomialFeatures())
+
+    if scale_f:
+        X_train, X_test = _transform(X_train, X_test, StandardScaler())
+
+    reg = model
+    reg.fit(X_train, y_train)
+
+    if picklize:
+        pickle.dump(reg, open(save_dir + "reg_model.p", "wb"))
+
+
+    pred = reg.predict(X_test)
+
+
+    pred_df = pd.DataFrame(data = {'pred': pred, 'true': y_test}, columns = ['pred', 'true'])
+    mse = mean_squared_error(y_test, pred)
+    return sqrt(mse), pred_df
+
+
+def train_cl(df, model, f_cols, picklize=False, save_dir="/"):
+    """
+    In: df        - DataFrame object that we want to learn from
+        model     - sklearn ML object
+        l_col     - label column name
+        f_cols    - list of feature column names
+    Out: tuple of mse and pred-true pairing DataFrame
+    """
+
+    X = df[f_cols].values
+
+    cl = model
+    cl.fit(X)
+
+    if picklize:
+        pickle.dump(model, open(save_dir + 'cl_model.p', "wb"))
+
+    pred = cl.predict(X)
+
+    df['pred'] = pred
+
+    return df
+
+
+def _transform(X_train, X_test, transformer):
+    tr = transformer.fit(X_train)
+
+    X_train = tr.transform(X_train)
+    X_test = tr.transform(X_test)
+
+    return X_train, X_test
+
+
+def predict(model, features):
+    """
+    IN:
+    reg: sklearn prediction model (pickle file)
+    features: feature column vector
+
+    OUT: float of predicted tax deduction
+    """
+    preds = model.predict(features)
+    return preds[0]
 
 def load_model(path):
     """
@@ -8,34 +106,52 @@ def load_model(path):
     """
     return pickle.load(open(path, "rb"))
 
+# Getting data
 
-def predict(reg, features):
-    """
-    IN:
-    reg: sklearn prediction model (pickle file)
-    features: feature column vector
+fname = "D:\\GovHack\\all_data\\2014-15.txt"
+df = pd.read_csv(fname, index_col=None, header=0)
 
-    features should be a numpy array or list with following format:
-         'Gender', 'age_range',
-         'Partner_status', 'Region',
-         'Taxable_Income', 'Sw_amt',
-         'Alow_ben_amt', 'ETP_txbl_amt',
-         'Grs_int_amt', 'Aust_govt_pnsn_allw_amt',
-         'Unfranked_Div_amt','Frk_Div_amt',
-         'Dividends_franking_cr_amt', 'Net_rent_amt',
-         'Gross_rent_amt', 'Other_rent_ded_amt',
-         'Rent_int_ded_amt', 'Rent_cap_wks_amt',
-         'Net_farm_management_amt','Net_PP_BI_amt',
-         'Net_NPP_BI_amt','Total_PP_BI_amt',
-         'Total_NPP_BI_amt','Total_PP_BE_amt',
-         'Total_NPP_BE_amt','Net_CG_amt',
-         'Tot_CY_CG_amt','Net_PT_PP_dsn',
-         'Net_PT_NPP_dsn','Taxed_othr_pnsn_amt',
-         'Untaxed_othr_pnsn_amt','Other_foreign_inc_amt',
-         'Other_inc_amt','Tot_inc_amt', 'Occ_code'
+# TODO: dummy variables: Occ_code, Partner_status, Region
 
+reg_cols = ['Gender', 'age_range', 'Sw_amt']
+cl_cols = ['Gender', 'age_range', 'Sw_amt']
 
-    OUT: float of predicted tax deduction
-    """
-    reg_predict = reg.predict(features)
-    return reg_predict[0]
+# Training models
+
+save_dir = "D:\\GovHackGitHub\\predstuff\\models"
+
+mse, pred_df = train_test_measure_reg(df=df,
+                                      model=Ridge(),
+                                      l_col='Tot_ded_amt',
+                                      f_cols=reg_cols,
+                                      scale_f=False,
+                                      poly_f=False,
+                                      picklize=True,
+                                      save_dir=save_dir)
+
+print "got regression model with mse = {}".format(mse)
+
+cl_df = train_cl(df=df,
+                 model=KMeans(),
+                 f_cols=cl_cols,
+                 picklize=True,
+                 save_dir=save_dir)
+
+print "got clustering model"
+
+# Getting models
+
+models_dir = "D:\\GovHackGitHub\\predstuff\\models"
+
+reg_model = load_model(models_dir + "reg_model.p")
+print reg_model
+
+cl_model = load_model(models_dir + "cl_model.p")
+print cl_model
+
+# Backend functions
+def prediction_backend(vector):
+    return predict(reg_model, vector)
+
+def clustering_backend(vector):
+    return predict(cl_model, vector)

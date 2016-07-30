@@ -17,28 +17,30 @@ parser = reqparse.RequestParser()
 parser.add_argument('isMale')
 parser.add_argument('ageRange')
 parser.add_argument('occupationCode')
-parser.add_argument('maritalStatus')
+parser.add_argument('maritalStatus', action='append')
 parser.add_argument('regionCode')
-parser.add_argument('taxAgent')
+parser.add_argument('taxAgent', action='append')
 parser.add_argument('salaryWages')
 
 class TaxProcess(Resource):
     def get(self):
-        # doing relative path
-        # not working on windows the pickle file
-        dir = os.path.dirname(__file__)
-        mdl = get_model.load_model\
-            (os.path.join(dir, 'reg_baseline.p'))
-        return get_model.predict(mdl, np.random.random_sample((35, 2)))
+        # dir = os.path.dirname(__file__)
+        pred = get_model.prediction_backend([1, 10, 200000])
+        cl = get_model.clustering_backend([1, 10, 200000])
+
+        return {'pred' : pred, 'cl' : cl}
 
     # receive the post request from front end
     def post(self):
         # getting the arguments
         args = parser.parse_args()
         # doing machine learning magic and returning result to the front end
-        return magic(args)
+        pred = get_model.prediction_backend(np.array(args['taxAgent'],dtype='float32'))
+        cl = get_model.clustering_backend(np.array(args['maritalStatus'], dtype='float32'))#[1, 10, 200000])
 
-def magic(data):
-    return jsonify(dict({'hey': 1, 'how': 3 }.items() + data.items()))
+        # return pred
+        # return args['taxAgent']
+        return {'pred': pred, 'cl': cl}
+
 
 api.add_resource(TaxProcess, '/process')
