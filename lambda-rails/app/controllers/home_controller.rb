@@ -29,8 +29,7 @@ class HomeController < ApplicationController
                       "maritalStatus": #{params["marital_status"]},
                       "regionCode": #{regionCode},
                       "taxAgent": #{params["tax_agent"]},
-                      "salaryWages": #{params["sw_amount"]}}
-                      )
+                      "salaryWages": #{params["sw_amount"]}})
                       end
 
                       res.body # returns a hash
@@ -65,7 +64,8 @@ class HomeController < ApplicationController
 
                         result = getData()
                         if (result != false)
-                          render json: result #{}"result"
+                          @new = "hey!!"
+                          render "result" #{}"result"
                         else
                           flash[:error] = "The Postcode entered could not be found."
                           render "index"

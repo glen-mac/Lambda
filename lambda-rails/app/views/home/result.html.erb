@@ -4,13 +4,93 @@
 	<%= stylesheet_link_tag "custom" %>
 	<%= javascript_include_tag "jquery.fullPage.min" %>
 	<%= javascript_include_tag "jquery-ui.min" %>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<%= javascript_include_tag "RadarChart" %>
+
 </head>
+<style>
+	.bar rect {
+		fill: steelblue;
+	}
+
+	.bar text {
+		fill: #fff;
+		font: 10px sans-serif;
+	}
+	#chart {
+		position: absolute;
+		top: 50px;
+		left: 100px;
+	}	
+</style>
 <body>
+	<!-- 	<%= @new %> -->
+	<div id="fullpage">
+		<div class="section"> 
+
+			<div class="row">
+
+				<div class="col-md-2"></div>
+				<div class="col-md-8">
 
 
+					<div class="inner cover">
+					<h1> Your Results! </h1>
+						<p class="lead">We have processed your data and made links with our model to provide you a series of results you may use to see the failings in your deductions.</p><br/><p>Scroll down the page!</p>
+					</div>
 
+				</div>
 
+				<div class="col-md-2"></div>
 
+			</div>
 
+		</div>
+
+		<div class="section">
+
+			<div class="row">
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+
+					<h1>Your Relative Position</h1>
+
+					<div class="panel panel-default">
+
+						<div class="panel-body">
+
+							<div id="radial_body">
+								<div id="radial_chart"></div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-xs-2"></div>
+
+			</div>
+
+		</div>
+		<div class="section">
+
+			<div id="chartline2" ></div>
+
+		</div>
+		<div class="section">
+
+			<div id="chartline3" ></div>
+
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$('#fullpage').fullpage();
+		});
+	</script>
+
+	<script>var w=500,h=500,colorscale=d3.scale.category10(),LegendOptions=["Your Deductions","Group Deductions"],clusterNumber=2;d3.csv("2.csv",function(e){e.forEach(function(e){e.population=+e.population,e["land area"]=+e["land area"]}),console.log(e[0])});var d=[[{axis:"Net Capital Gains",value:2010.55},{axis:"Superannuation Income",value:807.26},{axis:"Car Expenses",value:39.45},{axis:"Travel Expenses",value:6.21},{axis:"Uniform Expenses",value:10.33},{axis:"Self Education Expenses",value:6.47},{axis:"Interest Deductions",value:81.56},{axis:"Rental Deductions",value:1555.9},{axis:"Gross Rental Income",value:4051.2},{axis:"Franked Dividends",value:4635}],[{axis:"Net Capital Gains",value:1e3},{axis:"Superannuation Income",value:1e3},{axis:"Car Expenses",value:10},{axis:"Travel Expenses",value:10},{axis:"Uniform Expenses",value:10},{axis:"Self Education Expenses",value:10},{axis:"Interest Deductions",value:1e3},{axis:"Rental Deductions",value:1e3},{axis:"Gross Rental Income",value:1e3},{axis:"Franked Dividends",value:1e3}]],mycfg={w:w,h:h,maxValue:.6,levels:5,ExtraWidthX:300};RadarChart.draw("#radial_chart",d,mycfg);var svg=d3.select("#radial_body").selectAll("svg").append("svg").attr("width",w+300).attr("height",h),text=svg.append("text").attr("class","title").attr("transform","translate(90,0)").attr("x",w-70).attr("y",10).attr("font-size","12px").attr("fill","#404040").text("Your tax deductions compared to your group"),legend=svg.append("g").attr("class","legend").attr("height",100).attr("width",200).attr("transform","translate(90,20)");legend.selectAll("rect").data(LegendOptions).enter().append("rect").attr("x",w-65).attr("y",function(e,a){return 20*a}).attr("width",10).attr("height",10).style("fill",function(e,a){return colorscale(a)}),legend.selectAll("text").data(LegendOptions).enter().append("text").attr("x",w-52).attr("y",function(e,a){return 20*a+9}).attr("font-size","11px").attr("fill","#737373").text(function(e){return e});</script>
+	<script>var data=d3.range(1e3).map(d3.randomBates(10)),formatCount=d3.format(",.0f"),margin={top:10,right:30,bottom:30,left:30},width=960-margin.left-margin.right,height=500-margin.top-margin.bottom,x=d3.scaleLinear().rangeRound([0,width]),bins=d3.histogram().domain(x.domain()).thresholds(x.ticks(20))(data),y=d3.scaleLinear().domain([0,d3.max(bins,function(t){return t.length})]).range([height,0]),svg=d3.select("#chartline2").append("svg").attr("width",width+margin.left+margin.right).attr("height",height+margin.top+margin.bottom).append("g").attr("transform","translate("+margin.left+","+margin.top+")"),bar=svg.selectAll(".bar").data(bins).enter().append("g").attr("class","bar").attr("transform",function(t){return"translate("+x(t.x0)+","+y(t.length)+")"});bar.append("rect").attr("x",1).attr("width",x(bins[0].x1)-x(bins[0].x0)-1).attr("height",function(t){return height-y(t.length)}),bar.append("text").attr("dy",".75em").attr("y",6).attr("x",(x(bins[0].x1)-x(bins[0].x0))/2).attr("text-anchor","middle").text(function(t){return formatCount(t.length)}),svg.append("g").attr("class","axis axis--x").attr("transform","translate(0,"+height+")").call(d3.axisBottom(x));</script>
+	<script>var data=d3.range(1e3).map(d3.randomBates(10)),formatCount=d3.format(",.0f"),margin={top:10,right:30,bottom:30,left:30},width=960-margin.left-margin.right,height=500-margin.top-margin.bottom,x=d3.scaleLinear().rangeRound([0,width]),bins=d3.histogram().domain(x.domain()).thresholds(x.ticks(20))(data),y=d3.scaleLinear().domain([0,d3.max(bins,function(t){return t.length})]).range([height,0]),svg=d3.select("#chartline3").append("svg").attr("width",width+margin.left+margin.right).attr("height",height+margin.top+margin.bottom).append("g").attr("transform","translate("+margin.left+","+margin.top+")"),bar=svg.selectAll(".bar").data(bins).enter().append("g").attr("class","bar").attr("transform",function(t){return"translate("+x(t.x0)+","+y(t.length)+")"});bar.append("rect").attr("x",1).attr("width",x(bins[0].x1)-x(bins[0].x0)-1).attr("height",function(t){return height-y(t.length)}),bar.append("text").attr("dy",".75em").attr("y",6).attr("x",(x(bins[0].x1)-x(bins[0].x0))/2).attr("text-anchor","middle").text(function(t){return formatCount(t.length)}),svg.append("g").attr("class","axis axis--x").attr("transform","translate(0,"+height+")").call(d3.axisBottom(x));</script>
 
 </body>
