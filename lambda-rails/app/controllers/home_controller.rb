@@ -52,25 +52,29 @@ class HomeController < ApplicationController
                         #   #flash[:success] = "Message sent! Thank you for contacting us"
                         # else
                         #
-                        if(params["sw_amount"].to_f <= 0)
-                          flash[:error] = "Salary and Wages cannot be 0"
-                          render "index"
-                          return
-                          # elsif(params["postCode"].to_i == 0)
-                          #   flash[:error] = "Postcode must be entered."
-                          #   render "index"
-                          #   return
-                        end
+                        #
 
-                        result = getData()
-                        if (result != false)
-                          @new = "hey!!"
-                          render "result" #{}"result"
-                        else
-                          flash[:error] = "The Postcode entered could not be found."
-                          render "index"
-                        end
-                        #end
+                        render "result"
+
+                        # if(params["sw_amount"].to_f <= 0)
+                        #   flash[:error] = "Salary and Wages cannot be 0"
+                        #   render "index"
+                        #   return
+                        #   # elsif(params["postCode"].to_i == 0)
+                        #   #   flash[:error] = "Postcode must be entered."
+                        #   #   render "index"
+                        #   #   return
+                        # end
+
+                        # result = getData()
+                        # if (result != false)
+                        #   @new = "hey!!"
+                        #   render "result" #{}"result"
+                        # else
+                        #   flash[:error] = "The Postcode entered could not be found."
+                        #   render "index"
+                        # end
+                        # #end
                       end
 
 
