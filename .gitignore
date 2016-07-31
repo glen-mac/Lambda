@@ -4,3 +4,4 @@ lambda-rails/tmp/cache/assets/sprockets/v3.0/*
 lambda-flask/.idea/
 lambda-flask/predstuff/2014-15.txt
 */.ipynb_checkpoints
+.idea/
