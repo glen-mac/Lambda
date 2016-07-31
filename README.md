@@ -28,6 +28,12 @@ A significant difference likely indicates that you are either under claiming or 
 
 By using the ATO's open tax return datasets, which covers 2% of taxpayers, we can also show users with no statistical background key difference and similiarities between different demographics.
 
+#### Visulisated population clusters
+http://plnkr.co/oV69rrF338cHuLqm3lEG
+
+#### Video Entry for GovHack2016
+https://youtu.be/x9Xy2qFaL24
+
 #### Dataset Name: 
 Taxation statistics - Individual tax return sample files
 #### Publishing Organisation/Agency: 
