@@ -1,5 +1,6 @@
 lambda-rails/db/regions.csv
-.DS_Store
+*/.DS_Store
 lambda-rails/tmp/cache/assets/sprockets/v3.0/*
-.idea/
-.ipynb_checkpoints
+lambda-flask/.idea/
+lambda-flask/predstuff/2014-15.txt
+*/.ipynb_checkpoints

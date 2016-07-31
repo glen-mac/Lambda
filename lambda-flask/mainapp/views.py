@@ -41,7 +41,7 @@ class TaxProcess(Resource):
         args = parser.parse_args()
         pred_arg = np.array([args['isMale'],
                             args['ageRange'],
-                            args['occupationCode']], dtype='float32')
+                            args['occupationCode']], dtype='int32')
         # doing machine learning magic and returning result to the front end
         pred = get_model.prediction_backend(pred_arg)
         cl = get_model.clustering_backend(pred_arg)#[1, 10, 200000])

@@ -107,7 +107,7 @@ def load_model(path):
 
 # Getting data
 
-fname = "D:\\GovHack\\all_data\\2014-15.txt" # change this to yoour path
+fname = os.path.join(os.path.dirname(__file__), '2014-15.txt') # change this to yoour path
 df = pd.read_csv(fname, index_col=None, header=0)
 
 # TODO: dummy variables: Occ_code, Partner_status, Region
