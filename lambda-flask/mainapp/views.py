@@ -1,5 +1,5 @@
 from mainapp import mainapp, api
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, flash, redirect, url_for, request, jsonify, make_response, Response
 import forms
 from flask_restful import reqparse, abort, Api, Resource
 import numpy as np
@@ -33,12 +33,11 @@ class TaxProcess(Resource):
         pred = get_model.prediction_backend([1, 10, 200000])
         cl = get_model.clustering_backend([1, 10, 200000])
 
-        return 
-        df= 
-        resp = Response(response=df.to_json(),
-   status=200,
-   mimetype="application/json")
-return(resp)
+        result = {'pred': pred, 'cl': cl}
+
+        # resp = Response({'pred': pred}, mimetype='application/json')
+        return result
+
 
     # receive the post request from front end
     def post(self):
