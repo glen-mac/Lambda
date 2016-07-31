@@ -33,7 +33,12 @@ class TaxProcess(Resource):
         pred = get_model.prediction_backend([1, 10, 200000])
         cl = get_model.clustering_backend([1, 10, 200000])
 
-        return {'pred' : pred, 'cl' : cl}
+        return 
+        df= 
+        resp = Response(response=df.to_json(),
+   status=200,
+   mimetype="application/json")
+return(resp)
 
     # receive the post request from front end
     def post(self):
