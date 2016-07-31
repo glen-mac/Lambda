@@ -112,8 +112,8 @@ df = pd.read_csv(fname, index_col=None, header=0)
 
 # TODO: dummy variables: Occ_code, Partner_status, Region
 
-reg_cols = ['Gender', 'age_range', 'Sw_amt']
-cl_cols = ['Gender', 'age_range', 'Sw_amt']
+reg_cols = ['Gender', 'age_range', 'Sw_amt', 'Occ_code', 'Partner_status', 'Region']
+cl_cols = ['Gender', 'age_range', 'Sw_amt', 'Occ_code', 'Partner_status', 'Region']
 
 # Training models
 
