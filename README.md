@@ -1,7 +1,11 @@
 
 ![Alt text](http://i.imgur.com/Fd1aRP8.png)
 
-# Lambda
+# TaxLess - TeamTax
+
+***
+See below for the prizes we won at GovHack Finals 2016!
+***
 
 https://2016.hackerspace.govhack.org/content/taxless
 
@@ -44,3 +48,11 @@ Australian Government
 http://portal.govhack.org/datasets/2016/australia/australian-taxation-office/tax...
 #### How did you use this data in your entry?: 
 Firstly, we use K-means clustering (by Occupation code, salary and wages amount, region, age, marital status and gender) to group users into clusters. Secondly, within the clusters we use ridge regression (aided with dummy variables for the discrete variables) to understand, in a fine grained way, how tax effective particular users are and where they get deductions. Finally, we profile the clustering by showing the distribution of variables in the different groups to study their differences among the clusters.
+
+## Prizes Won
+[Data Intelligence Prize](http://portal.govhack.org/prizes/2016/australia/australia-data-intelligence-hack.html)
+
+[Smarter Data Prize](http://portal.govhack.org/prizes/2016/australia/australia-smarter-data.html)
+
+[Google Machine Learning Prize](http://portal.govhack.org/prizes/2016/australia/australia-machine-learning-hack.html)
+
